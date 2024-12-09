@@ -28,7 +28,7 @@ public class KeybindingManager {
 
     //Defining a readable and writable config file system where the file is saved
     private static final String USER_HOME = System.getProperty("user.home");
-    private static final Path CONFIG_PATH = Paths.get(USER_HOME, "2D Game", "config", "keybindings.json");
+    private static final Path CONFIG_PATH = Paths.get(USER_HOME, "Saved Games", "2D Game", "config", "keybindings.json");
 
 
     //=====================================================
@@ -49,7 +49,9 @@ public class KeybindingManager {
 
                 for (Keybinding keybinding : Keybinding.values()) {
 
-                    keybinding.setCode(any.get(keybinding.getIdentifier()).toInt());
+                    int combined = any.get(keybinding.getIdentifier()).toInt();
+                    keybinding.setCode(combined & 0xFFFF);//Extracting the key code, lower sixteen bits.
+                    keybinding.setModifiers(combined & ~0xFFFF);//Extracting the modifier flags, upper bits.
 
                 }//End of For-Each Loop
 
@@ -104,7 +106,7 @@ public class KeybindingManager {
 
             for (Keybinding keybinding : Keybinding.values()) {
 
-                data.put(keybinding.getIdentifier(), keybinding.getCode());
+                data.put(keybinding.getIdentifier(), keybinding.getCode() | keybinding.getModifiers());
 
             }//End of For-Each Loop
 
@@ -114,7 +116,7 @@ public class KeybindingManager {
             try (OutputStream outputStream = new FileOutputStream(CONFIG_PATH.toFile())) {
 
                 outputStream.write(json.getBytes(StandardCharsets.UTF_8));
-                log.info("Saved keybindings successfully to " + CONFIG_PATH);
+                log.info("Saved keybindings successfully to {}", CONFIG_PATH);
 
             }//End of Try Statement
 

@@ -29,18 +29,32 @@ public enum Keybinding {
     @Setter
     private int code;
     private final int defaultCode;
+    @Setter
+    private int modifiers;
+    private int defaultModifiers;//Should be changed to final in the event of a new keybinding using it should be added.
 
     private final Runnable action;
 
 
-    //=============
-    // CONSTRUCTOR
-    //=============
+    //==============
+    // CONSTRUCTORS
+    //==============
     Keybinding(String identifier, int code, int defaultCode, Runnable action) {
 
         this.identifier = identifier;
         this.code = code;
         this.defaultCode = defaultCode;
+        this.action = action;
+
+    }//End of Constructor
+
+    Keybinding(String identifier, int code, int defaultCode, int modifiers, int defaultModifiers, Runnable action) {
+
+        this.identifier = identifier;
+        this.code = code;
+        this.defaultCode = defaultCode;
+        this.modifiers = modifiers;
+        this.defaultModifiers = defaultModifiers;
         this.action = action;
 
     }//End of Constructor
