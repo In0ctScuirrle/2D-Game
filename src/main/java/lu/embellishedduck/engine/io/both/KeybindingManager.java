@@ -55,9 +55,13 @@ public class KeybindingManager {
 
                 }//End of For-Each Loop
 
-                log.info("Loaded keybindings from {}", CONFIG_PATH);
+                log.info("Loaded keybindings successfully from {}", CONFIG_PATH);
 
-            }//End of If Statement
+            } else {
+
+                saveKeybindings();//If the keybindings config cannot be loaded it has to be initialized, this prevents the crash from earlier.
+
+            }//End of If-Else Statement
 
         } catch (IOException ex) {
 
